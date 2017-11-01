@@ -1,0 +1,22 @@
+{
+  "name": "web-assignment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bradleymackey/web-assignment.git"
+  },
+  "author": "Bradley Mackey",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bradleymackey/web-assignment/issues"
+  },
+  "homepage": "https://github.com/bradleymackey/web-assignment#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
