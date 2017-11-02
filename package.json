@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/bradleymackey/web-assignment#readme",
   "dependencies": {
-    "node-localdb": "0.0.3"
+    "body-parser": "^1.18.2",
+    "js-sha256": "^0.7.1",
+    "node-localdb": "0.0.3",
+    "uuid": "^3.1.0"
   }
 }
