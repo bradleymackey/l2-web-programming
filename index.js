@@ -156,6 +156,8 @@ app.post(base+'/venues/add', (req,res) => {
   });
 });
 
+const ISO_8601_FULL = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z)?$/i
+
 // Parameter auth_token (required)
 // Parameter event_id text value (required)
 // Parameter title text value (required)
@@ -179,6 +181,12 @@ app.post(base+'/events/add', (req,res) => {
   if (event_id === undefined || title === undefined || venue_id === undefined || date === undefined) {
     res.status(400);
     res.json({error:"insufficient parameters"});
+    res.end();
+    return;
+  }
+  if (ISO_8601_FULL.test(date) === false) {
+    res.status(400);
+    res.json({error:"date is not in the correct format (expected ISO8601)"});
     res.end();
     return;
   }
@@ -268,7 +276,7 @@ function checkToken(token,ipAddress) {
   if (token === undefined || ipAddress === undefined) {
     return false;
   }
-  // allowed for durham external and for local installations
+  // "concertina" allowed for durham external and for local installations
   if (token === "concertina" && (ipAddress.startsWith("129.234") || ipAddress.startsWith("127.0.0.1") || ipAddress.startsWith("::1"))) {
     return true;
   }
@@ -284,7 +292,6 @@ function checkToken(token,ipAddress) {
     return false;
   }
 }
-
 
 // begin listening
 app.listen(8090, () => {

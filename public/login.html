@@ -1,14 +1,14 @@
-<!-- USE A MODAL FOR ADDING NEW VENUES AND EVENTS -->
 <!doctype html>
 <html>
 <head>
-  <title>Events 2017 -> Admin</title>
+  <title>Events 2017 -> Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-<link rel="stylesheet" href="styles/common.css">
+  <link rel="stylesheet" href="styles/common.css">
 </head>
 <body>
+
   <!-- NAV BAR -->
   <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #4286f4;">
   <a class="navbar-brand" href="/events2017/">Events 2017</a>
@@ -18,11 +18,31 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       <a class="nav-item nav-link" href="/events2017/">Find Events</a>
-      <a class="nav-item nav-link active" href="/events2017/admin.html">Admin Panel<span class="sr-only">(current)</span></a>
-      <a class="nav-item nav-link" href="/events2017/login.html">Admin Login</a>
+      <a class="nav-item nav-link" href="/events2017/admin.html">Admin Panel</a>
+      <a class="nav-item nav-link active" href="/events2017/login.html">Admin Login <span class="sr-only">(current)</span></a>
     </div>
   </div>
 </nav>
+
+<!-- title -->
+<h1 class="display-3 super-heading">Admin Login</h1>
+<p class="text-muted" style="text-align: center;padding-bottom:2vh;">
+  Login to be able to use the Admin Panel to create new venues and events.
+</p>
+
+<!-- login form -->
+<form id="login-form" class="generic-form">
+  <div class="form-group">
+    <input type="username" class="form-control" id="keywordField" placeholder="Username">
+  </div>
+  <div class="form-group">
+    <input type="password" class="form-control" id="keywordField" placeholder="Password">
+  </div>
+  <br>
+  <span class="center-block">
+  <button type="submit" class="btn btn-primary btn-lg">Login</button>
+</span>
+</form>
 
 <!-- FOOTER -->
   <footer class="footer">
@@ -30,7 +50,7 @@
       <span class="text-muted">&#169; Bradley Mackey 2017</span>
     </div>
   </footer>
-  <!-- scripts at the bottom so the page will load faster -->
+  <!-- scipts at the bottom so the html will load faster -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
