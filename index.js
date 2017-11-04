@@ -1,9 +1,6 @@
 // create the app
 const express = require('express');
 const app = express();
-// for parsing POST information
-// request.body.parameter_name
-const bodyParser = require('body-parser');
 // local database for local storage of events
 // this adds some eronous properties to the entries, so objects will need to be recreated before returning
 const db = require('node-localdb');
@@ -28,10 +25,47 @@ app.use(base, express.static("public"));
 
 // MARK: - JSON API
 
-// support json encoded bodies
+// for parsing POST information (request.body.parameter_name)
+const bodyParser = require('body-parser');
 app.use(bodyParser.json());
-// support encoded bodies
 app.use(bodyParser.urlencoded({extended:true}));
+
+// used for getting cookies (request.cookies.cookie_name)
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
+// app.get('/', function(req,res)  {
+//   let ven = {
+//     "event_id":"e_2",
+//     "title":"BoardMasters",
+//     "blurb":"The biggest and best concertina weekend in the world. Held each May in Grinton Lodge YHA, North Yorkshire",
+//     "date":"2018-05-21T16:00:00Z",
+//     "url":"http://www.swaledalesqueeze.org.uk",
+//     "venue": {
+//     "name":"Sage Gateshead",
+//     "postcode":"NE8 2JR",
+//     "town":"Gateshead",
+//     "url":"someurl",
+//     "icon":"someicon",
+//     "venue_id":"v_2"
+//      }
+//     }
+//   eventdb.insert(ven);
+//       res.send("done");
+// });
+
+// app.get('/', function (req,res) {
+//   let ven = {
+//     "venue_id":"v_2",
+//     "name":"Sage Gateshead",
+//     "postcode":"NE8 2JR",
+//     "town":"Gateshead",
+//     "url":"http://www.sagegateshead.com/",
+//     "icon":"http://www.sagegateshead.com/files/images/pageimage/1683.7123dea7/630x397.fitandcrop.jpg"
+//   }
+//   venuedb.insert(ven);
+//   res.send("done");
+// });
 
 // list all venue details
 // no parameters
@@ -76,13 +110,22 @@ app.get(base+'/events/search', (req,res) => {
   const searchedDate = req.query.date;
   const searchParams = {};
   if (searchedTitle !== undefined && searchedTitle !== "") {
-    searchParams.eventName = searchedTitle;
+    searchParams.title = searchedTitle;
   }
   if (searchedDate !== undefined && searchedDate !== "") {
     searchParams.date = searchedDate;
   }
-  // TODO: I need to know if I should return NONE or all of the events if no search terms are provided.
-  res.json({name:"john"});
+  eventdb.find(searchParams).then((allEventsArray) => {
+    for (event of allEventsArray) {
+      delete event._id;
+    }
+    res.json({events:allEventsArray});
+    res.end();
+  }).catch((error) => {
+    res.status(400);
+    res.json({error:"error retrieving values"});
+    res.end();
+  });
 });
 
 // Parameter event_id in URL (required)
@@ -91,24 +134,14 @@ app.get(base+'/events/search', (req,res) => {
 app.get(base+'/events/get/:event_id', (req,res) => {
   const eventID = req.params.event_id;
   eventdb.findOne({event_id:eventID}).then((databaseEvent) => {
-    if (databaseEvent === undefined) {
+    if (databaseEvent === undefined || databaseEvent === null) {
+      console.log("nothing found");
       res.json({error:"no such event"});
       res.end();
     } else {
-      const venueID = databaseEvent.venue_id;
-      // return the promise so that it can be evaluated in the outer promise
-      return venuedb.findOne({venue_id:venueID}).then((databaseVenue) => {
-        if (databaseVenue === undefined) {
-          // we actually could find the event, but we could not find the venue associated with it.
-          res.json({error:"no such event"});
-        } else {
-          // the embedded venue within the event
-          const venueObj = new FinalVenue(databaseVenue);
-          // the event JSON object we will respond with
-          const eventObj = new FinalEvent(databaseEvent,venueObj);
-          res.json(eventObj);
-        }
-      });
+      delete databaseEvent._id;
+      res.json(databaseEvent);
+      res.end();
     }
   }).catch((error) => {
     console.log(error);
@@ -193,38 +226,36 @@ app.post(base+'/events/add', (req,res) => {
   let newEvent = {};
   newEvent.event_id = event_id;
   newEvent.title = title;
-  newEvent.venue_id = venue_id;
   newEvent.date = date;
   newEvent.url = req.body.url;
   newEvent.blurb = req.body.blurb;
-  eventdb.insert(newEvent).then((event) => {
-    res.json({success:"added event successfully"});
+  // find an event with this event id so that we can inline it into the event database entry
+  venuedb.findOne({venue_id:venue_id}).then((venue) => {
+    if (venue === undefined || venue === null) {
+      // we cannot find that venue, so we cannot insert this event.
+      res.status(400);
+      res.json({error:"error inserting event into database"});
+    } else {
+      // we have found the venue,
+      // inline the venue_id for easy retrieval when we get this event.
+      const venueID = venue_id;
+      venue.venue_id = venue_id;
+      delete venue._id;
+      // set the venue inline
+      newEvent.venue = venue;
+      // insert to database
+      eventdb.insert(newEvent).then((event) => {
+        res.json({success:"added event successfully"});
+      }).catch((error) => {
+        res.status(400);
+        res.json({error:"error inserting event into database"});
+      });
+    }
   }).catch((error) => {
     res.status(400);
     res.json({error:"error inserting event into database"});
   });
 });
-
-// builds a venue that our API should return (fixes anomalies caused by the database)
-function FinalEvent(databaseEvent,embeddedVenue) {
-  this.event_id = databaseEvent.event_id;
-  this.title = databaseEvent.title;
-  this.blurb = databaseEvent.blurb;
-  this.date = databaseEvent.date;
-  this.url = databaseEvent.url;
-  this.venue = embeddedVenue;
-}
-
-// builds a venue that our API should return (fixes anomalies caused by the database)
-// this won't work for the BASE/venues call though, as the format is different
-function FinalVenue(databaseVenue) {
-  this.name = databaseVenue.name;
-  this.postcode = databaseVenue.postcode;
-  this.town = databaseVenue.town;
-  this.url = databaseVenue.url;
-  this.icon = databaseVenue.icon;
-  this.venue_id = databaseVenue.venue_id;
-}
 
 
 // MARK: - Authentication
@@ -238,7 +269,7 @@ app.post(base+'/request-token', (req,res) => {
   const ip = req.ip;
   if (username === undefined || password === undefined) {
     res.status(400);
-    res.send("username and password required");
+    res.json({error:"username and password required"});
   } else {
     // save the entry with the ip address and timestamp, so we know if the user trying to use the token is in a different location or if the key has expired.
     const random_token = uuidv4();

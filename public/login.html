@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>Events 2017 -> Login</title>
+  <title>Events 2017 - Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
@@ -30,13 +30,27 @@
   Login to be able to use the Admin Panel to create new venues and events.
 </p>
 
+<!-- warning -->
+<div id="login-alert-container">
+  <div class="alert alert-warning" role="alert" style="display: inline-block;">
+    Please make sure you have entered a username and password.
+  </div>
+</div>
+
+<!-- another warning -->
+<div id="server-alert-container">
+  <div class="alert alert-danger" role="alert" style="display: inline-block;">
+    Please try again later! The server is not playing ball :(
+  </div>
+</div>
+
 <!-- login form -->
 <form id="login-form" class="generic-form">
   <div class="form-group">
-    <input type="username" class="form-control" id="keywordField" placeholder="Username">
+    <input type="text" class="form-control" id="username-field" placeholder="Username">
   </div>
   <div class="form-group">
-    <input type="password" class="form-control" id="keywordField" placeholder="Password">
+    <input type="password" class="form-control" id="password-field" placeholder="Password">
   </div>
   <br>
   <span class="center-block">
@@ -51,8 +65,9 @@
     </div>
   </footer>
   <!-- scipts at the bottom so the html will load faster -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  <script src="scripts/login.js"></script>
 </body>
 </html>

@@ -2,11 +2,11 @@
 <!doctype html>
 <html>
 <head>
-  <title>Events 2017 -> Admin</title>
+  <title>Events 2017 - Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-<link rel="stylesheet" href="styles/common.css">
+  <link rel="stylesheet" href="styles/common.css">
 </head>
 <body>
   <!-- NAV BAR -->
@@ -24,6 +24,46 @@
   </div>
 </nav>
 
+<!-- heading -->
+<h1 class="display-3 super-heading">Admin Panel</h1>
+
+<!-- login alert -->
+<div id="auth-alert-container">
+  <div class="alert alert-danger" role="alert" style="display: inline-block;">
+    You are not logged in. Please login before you try to submit any data.
+  </div>
+</div>
+
+<!-- sub head -->
+<h5 style="text-align: center;">
+  Manage venues and events.
+</h5>
+
+<!-- venues -->
+<div style="text-align:center; padding: 20px;">
+  <button type="button" class="btn btn-success btn-lg">Add Venue</button>
+</div>
+
+<!-- COLUMNS GRID -->
+<div class="container">
+  <div class="row">
+    <div class="col-md">
+      <h3>Some Venue</h3><br>
+      <button type="button" class="btn btn-success">Add Event</button>
+    </div>
+    <div class="col-md">
+      <h3>Some Venue</h3><br>
+      <button type="button" class="btn btn-success">Add Event</button>
+    </div>
+    <div class="col-md">
+      <h3>Some Venue</h3><br>
+      <button type="button" class="btn btn-success">Add Event</button>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
@@ -31,8 +71,9 @@
     </div>
   </footer>
   <!-- scripts at the bottom so the page will load faster -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  <script src="scripts/admin.js"></script>
 </body>
 </html>

@@ -18,6 +18,7 @@
   "homepage": "https://github.com/bradleymackey/web-assignment#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
     "js-sha256": "^0.7.1",
     "node-localdb": "0.0.3",
     "uuid": "^3.1.0"
