@@ -27,16 +27,20 @@ $("#event-search").submit( (event) => {
       }
       let $rowToInsert = $(`#${row}`);
       $rowToInsert.append(`<div class="col-md" id="col-md-${itemCount}"><div class="init-show" id="init-show-${itemCount}"></div><div class="init-hidden" id="init-hidden-${itemCount}"></div></div>`);
+      // portion that is initially shown to the user
       let $initShow = $(`#init-show-${itemCount}`);
       $initShow.append(`<h3>${event.title}</h3><hr>`);
       $initShow.append(`<h5>${event.venue.name}</h5>`);
       $initShow.append(`<p class="text-muted">${event.date}</p>`);
-      $initShow.append(`<button type="button" class="btn btn-info more-button">More</button>`); // so we can identify the click
+      $initShow.append(`<button type="button" class="btn btn-info more-button">More Info</button>`);
+      // portion that will be shown when more-button is clicked
       let $initHidden = $(`#init-hidden-${itemCount}`);
       $initHidden.append(`<p>${event.blurb}</p>`);
+      $initHidden.append(`<p>Event ID: <code>${event.event_id}</code></p>`);
       $initHidden.append(`<a href="${event.url}">Event Website</a><br><br>`);
       $initHidden.append(`<img style="max-width: 100px; max-height: 50px; object-fit: contain;" src="${event.venue.icon}" alt="${event.venue.name}"><br><br>`);
       $initHidden.append(`<p>${event.venue.name}, ${event.venue.town}, ${event.venue.postcode}</p>`);
+      $initHidden.append(`<p>Venue ID: <code>${event.venue.venue_id}</code></p>`);
       $initHidden.append(`<a href="${event.venue.url}">Venue Website</a>`);
       itemCount += 1;
     }
@@ -51,33 +55,7 @@ $("#search-results").on('click', ".more-button", function () {
   console.log("pressing");
   // hide the buttton
   $(this).hide();
-  // current hidden id we want to display
-  let hiddenId = $(this).parent().attr("id").replace("show","hidden");
+  // show the currently hidden portion
+  let hiddenId = $(this).parent().attr("id").replace("show","hidden"); // get the div containing the button, which is the init-show-${id}. then replace 'show' with 'hidden'
   $(`#${hiddenId}`).show();
 });
-
-// <div class="container" id="search-results">
-//   <div class="row">
-//     <div class="col-md">
-//       <h3>Some Event with a long title it is nice sdfjdsdfsdfsfd</h3>
-//       <hr>
-//       <h5>Some Venue</h5>
-//       <p class="text-muted">26 June 2017</p>
-//       <button type="button" class="btn btn-info">More</button>
-//     </div>
-//     <div class="col-md">
-//       <h3>Some Event</h3>
-//       <hr>
-//       <h5>Some Venue</h5>
-//       <p class="text-muted">26 June 2017</p>
-//       <button type="button" class="btn btn-info">More</button>
-//     </div>
-//     <div class="col-md">
-//       <h3>Some Event</h3>
-//       <hr>
-//       <h5>Some Venue</h5>
-//       <p class="text-muted">26 June 2017</p>
-//       <button type="button" class="btn btn-info">More</button>
-//     </div>
-//   </div>
-// </div>
