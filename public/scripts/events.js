@@ -33,9 +33,11 @@ $("#event-search").submit( (event) => {
       $initShow.append(`<p class="text-muted">${event.date}</p>`);
       $initShow.append(`<button type="button" class="btn btn-info more-button">More</button>`); // so we can identify the click
       let $initHidden = $(`#init-hidden-${itemCount}`);
-      $initHidden.append(`<hr>`);
       $initHidden.append(`<p>${event.blurb}</p>`);
-      $initHidden.append(`<a href="${event.url}">Website</a>`);
+      $initHidden.append(`<a href="${event.url}">Event Website</a><br><br>`);
+      $initHidden.append(`<img style="max-width: 100px; max-height: 50px; object-fit: contain;" src="${event.venue.icon}" alt="${event.venue.name}"><br><br>`);
+      $initHidden.append(`<p>${event.venue.name}, ${event.venue.town}, ${event.venue.postcode}</p>`);
+      $initHidden.append(`<a href="${event.venue.url}">Venue Website</a>`);
       itemCount += 1;
     }
   });
