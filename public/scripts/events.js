@@ -32,6 +32,7 @@ $("#event-search").submit( (event) => {
       column.append(`<h5>${event.venue.name}</h5>`);
       column.append(`<p class="text-muted">${event.date}</p>`);
       column.append(`<button type="button" class="btn btn-info" id="eventid_${event.event_id}">More</button>`); // so we can identify the click
+      //$(`#eventid_${event.event_id}`); USE FOR BUTTON MAYBE
       itemCount += 1;
     }
   });
