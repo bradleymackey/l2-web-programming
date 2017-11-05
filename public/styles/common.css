@@ -4,6 +4,10 @@
 
 /* TITLE */
 
+.init-hidden {
+  display: none;
+}
+
 .super-heading {
   margin: auto;
   padding-left: 20px;

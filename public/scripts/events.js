@@ -25,20 +25,34 @@ $("#event-search").submit( (event) => {
       if (itemCount % 3 === 0) {
         $insertionPoint.append(`<div class=\"row\" id=\"${row}\"></div>`);
       }
-      let rowToInsert = $(`#${row}`);
-      rowToInsert.append(`<div class="col-md" id="col-md-${itemCount}"></div>`);
-      let column = $(`#col-md-${itemCount}`);
-      column.append(`<h3>${event.title}</h3><hr>`);
-      column.append(`<h5>${event.venue.name}</h5>`);
-      column.append(`<p class="text-muted">${event.date}</p>`);
-      column.append(`<button type="button" class="btn btn-info" id="eventid_${event.event_id}">More</button>`); // so we can identify the click
-      //$(`#eventid_${event.event_id}`); USE FOR BUTTON MAYBE
+      let $rowToInsert = $(`#${row}`);
+      $rowToInsert.append(`<div class="col-md" id="col-md-${itemCount}"><div class="init-show" id="init-show-${itemCount}"></div><div class="init-hidden" id="init-hidden-${itemCount}"></div></div>`);
+      let $initShow = $(`#init-show-${itemCount}`);
+      $initShow.append(`<h3>${event.title}</h3><hr>`);
+      $initShow.append(`<h5>${event.venue.name}</h5>`);
+      $initShow.append(`<p class="text-muted">${event.date}</p>`);
+      $initShow.append(`<button type="button" class="btn btn-info more-button">More</button>`); // so we can identify the click
+      let $initHidden = $(`#init-hidden-${itemCount}`);
+      $initHidden.append(`<hr>`);
+      $initHidden.append(`<p>${event.blurb}</p>`);
+      $initHidden.append(`<a href="${event.url}">Website</a>`);
       itemCount += 1;
     }
   });
-  return false;
 });
 
+
+// when the show more button is clicked
+// IMPORTANT, the main element we are referencing MUST have been visible before the javascript loaded
+// its subordinates can come it at any time though
+$("#search-results").on('click', ".more-button", function () {
+  console.log("pressing");
+  // hide the buttton
+  $(this).hide();
+  // current hidden id we want to display
+  let hiddenId = $(this).parent().attr("id").replace("show","hidden");
+  $(`#${hiddenId}`).show();
+});
 
 // <div class="container" id="search-results">
 //   <div class="row">
