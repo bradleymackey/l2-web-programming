@@ -160,6 +160,7 @@ app.post(base+'/venues/add', (req,res) => {
   const token = req.body.auth_token;
   const ip = req.ip;
   if (checkToken(token,ip) === false) {
+    console.log("invalid token");
     res.status(400);
     res.json({error: "not authorised, wrong token"});
     res.end();
@@ -168,6 +169,7 @@ app.post(base+'/venues/add', (req,res) => {
   // we have a valid token!
   const name = req.body.name;
   if (name === undefined) {
+    console.log("no name parameter");
     res.status(400);
     res.json({error: "name parameter required"});
     res.end();
@@ -184,6 +186,7 @@ app.post(base+'/venues/add', (req,res) => {
   venuedb.insert(newVenue).then((added) => {
     res.json({success:"added venue successfully"});
   }).catch((error) => {
+    console.log("couldn't add to database");
     res.status(400);
     res.json({error:"error inserting venue into database"});
   });
