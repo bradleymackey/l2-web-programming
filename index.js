@@ -23,6 +23,27 @@ let auth_tokens = {};
 
 app.use(base, express.static("public"));
 
+// Add headers
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+
+
 // MARK: - JSON API
 
 // for parsing POST information (request.body.parameter_name)
@@ -215,12 +236,14 @@ app.post(base+'/events/add', (req,res) => {
   const venue_id = req.body.venue_id;
   const date = req.body.date;
   if (event_id === undefined || title === undefined || venue_id === undefined || date === undefined) {
+    console.log("bad event id or venue id");
     res.status(400);
     res.json({error:"insufficient parameters"});
     res.end();
     return;
   }
   if (ISO_8601_FULL.test(date) === false) {
+    console.log("bad date");
     res.status(400);
     res.json({error:"date is not in the correct format (expected ISO8601)"});
     res.end();
@@ -236,6 +259,7 @@ app.post(base+'/events/add', (req,res) => {
   venuedb.findOne({venue_id:venue_id}).then((venue) => {
     if (venue === undefined || venue === null) {
       // we cannot find that venue, so we cannot insert this event.
+      console.log("can't find venue");
       res.status(400);
       res.json({error:"error inserting event into database"});
     } else {
@@ -250,11 +274,13 @@ app.post(base+'/events/add', (req,res) => {
       eventdb.insert(newEvent).then((event) => {
         res.json({success:"added event successfully"});
       }).catch((error) => {
+        console.log("can't insert event");
         res.status(400);
         res.json({error:"error inserting event into database"});
       });
     }
   }).catch((error) => {
+    console.log("can't insert event");
     res.status(400);
     res.json({error:"error inserting event into database"});
   });

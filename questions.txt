@@ -1,0 +1,4 @@
+- should the search bar on the events page also search the external service, or should the external events just stick the one keyword like you said (e.g. concertina)?
+- should we auto-generate the venue_id, because you said there is no requirment for it in venues/add? If so, why the inconsistency with the auto-generation of venue_id and manual entry of event_id?
+- in the authentication system, should the user's ip address be a search parameter or should we extract it from the request object?
+- do searches in /events/search have to be case sensitive and match exactly, or have different behaviour?

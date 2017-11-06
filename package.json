@@ -19,6 +19,7 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
     "js-sha256": "^0.7.1",
     "node-localdb": "0.0.3",
     "uuid": "^3.1.0"

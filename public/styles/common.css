@@ -2,6 +2,10 @@
 
 /* STYLES SHARED ACROSS BOTH OF THE PAGES ARE PRESENT HERE */
 
+hr.dashed {
+	border-top: 3px dashed #dee1e5;
+}
+
 /* TITLE */
 
 .init-hidden {

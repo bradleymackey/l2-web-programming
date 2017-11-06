@@ -34,15 +34,13 @@
   </div>
 </div>
 
-<!-- sub head -->
-<h5 style="text-align: center;">
-  Manage venues and events.
-</h5>
 
 <!-- venues -->
 <div style="text-align:center; padding: 20px;">
   <button type="button" id="invoke-addVenueModal" class="btn btn-success btn-lg" data-toggle="modal" data-target="#addVenueModal">Add Venue</button>
 </div>
+
+<br><br>
 
 <!-- "ADD VENUE" Modal -->
 <div class="modal fade" id="addVenueModal" tabindex="-1" role="dialog" aria-labelledby="addVenueLabel" aria-hidden="true">
@@ -56,7 +54,7 @@
       </div>
       <form id="add-venue-form">
         <div class="modal-body">
-          <div class="alert alert-danger" id="name-required-alert" style="display: none;" role="alert">
+          <div class="alert alert-danger" id="venue-name-required-alert" style="display: none;" role="alert">
               A name is required.
           </div>
           <input type="text" class="form-control" id="venue-name-field" placeholder="Name"><br>
@@ -74,10 +72,48 @@
   </div>
 </div>
 
+<!-- "ADD EVENT" Modal -->
+<div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="addEventLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addEventLabel">Add Event to Venue</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="add-event-form">
+        <div class="modal-body">
+          <div class="alert alert-danger" id="event-title-required-alert" style="display: none;" role="alert">
+              A title is required.
+          </div>
+          <div class="alert alert-danger" id="event-date-required-alert" style="display: none;" role="alert">
+              A date is required.
+          </div>
+          <div class="alert alert-danger" id="event-id-required-alert" style="display: none;" role="alert">
+              A Event ID is required.
+          </div>
+          <p style="margin-bottom: 8px;">Venue ID:</p>
+          <input type="text" class="form-control" id="event-venue_id-field" disabled>
+          <hr>
+          <input type="text" class="form-control" id="event-title-field" placeholder="Title"><br>
+          <input type="text" class="form-control" id="event-id-field" placeholder="Event ID"><br>
+          <input type="text" class="form-control" id="event-date-field" placeholder="Date (ISO-8601)"><br>
+          <input type="text" class="form-control" id="event-blurb-field" placeholder="Blurb (optional)"><br>
+          <input type="text" class="form-control" id="event-url-field" placeholder="Website URL (optional)">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-primary" value="Add">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- COLUMNS GRID -->
 <div class="container" id="search-results">
 </div>
-
 
 
 <!-- FOOTER -->
