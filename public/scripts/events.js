@@ -60,7 +60,7 @@ $("#event-search").submit( (event) => {
     }
   });
   // GET FROM THE REMOTE SERVICE
-  $.get('http://api.eventful.com/json/events/search?app_key=pPHmxHj5PpbfrP9s&keywords=video&location=United+Kingdom&date=Future&page_size=6', (data) => {
+  $.get('http://api.eventful.com/json/events/search?app_key=pPHmxHj5PpbfrP9s&keywords=video&location=United+Kingdom&date=Future&page_size=8', (data) => {
     // offset it by 1000 so that it does not collide with the local events
     let itemCount = 1000;
     const events = data.events.event;

@@ -116,6 +116,8 @@ $(document).on('click', ".invoke-addVenueModal", function() {
    $("#event-venue_id-field").val(venueIDForSelectedVenue);
 });
 
+const ISO_8601_FULL = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z)?$/i
+
 // when the event form is submitted
 $("#add-event-form").on('submit', (event) => {
   event.preventDefault();
@@ -137,7 +139,7 @@ $("#add-event-form").on('submit', (event) => {
   if (date !== undefined && date !== null) {
     date = date.trim();
   }
-  if (date === "" || date === undefined || date === null) {
+  if (date === "" || date === undefined || date === null || ISO_8601_FULL.test(date) === false) {
     $("#event-date-required-alert").show();
     return;
   }
