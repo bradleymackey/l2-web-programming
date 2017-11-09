@@ -32,14 +32,14 @@ function updateVenues() {
       let rowToInsert = $(`#${row}`);
       rowToInsert.append(`<div class="col-md" id="col-md-${itemCount}"></div>`);
       let column = $(`#col-md-${itemCount}`);
-      column.append(`<h3>${venObj.name}</h3>`);
-      column.append(`<h5 class="text-muted">${venObj.town} ${venObj.postcode}</h5><hr>`);
+      column.append(`<h3>${venObj.name || ""}</h3>`);
+      column.append(`<h5 class="text-muted">${venObj.town || ""} ${venObj.postcode || ""}</h5><hr>`);
       if (venObj.url !== undefined && venObj.url !== null) {
         if (venObj.url !== "") {
-          column.append(`<a href="${venObj.url}"><b>Website</b></a><br>`);
+          column.append(`<a href="${venObj.url || ""}"><b>Website</b></a><br>`);
         }
       }
-      column.append(`<p class="text-muted">ID: <code>${venueID}</code></p>`)
+      column.append(`<p class="text-muted">ID: <code>${venueID || ""}</code></p>`)
       column.append(`<button type="button" class="btn btn-success invoke-addVenueModal" data-id="${venueID}" data-toggle="modal" data-target="#addEventModal">Add Event</button>`);
       itemCount += 1;
     }
@@ -88,10 +88,18 @@ $("#add-venue-form").on('submit', (event) => {
   let venueToPost = {};
   venueToPost.auth_token = auth_token;
   venueToPost.name = name;
-  venueToPost.postcode = postcode;
-  venueToPost.town = town;
-  venueToPost.url = url;
-  venueToPost.icon = icon;
+  if (postcode !== "") {
+    venueToPost.postcode = postcode;
+  }
+  if (town !== "") {
+    venueToPost.town = town;
+  }
+  if (url !== "") {
+    venueToPost.url = url;
+  }
+  if (icon !== "") {
+    venueToPost.icon = icon;
+  }
   console.log(venueToPost);
   const getUrl = window.location;
   const baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
@@ -159,8 +167,12 @@ $("#add-event-form").on('submit', (event) => {
   eventToPost.event_id = id;
   eventToPost.title = title;
   eventToPost.date = date;
-  eventToPost.url = url;
-  eventToPost.blurb = blurb;
+  if (url !== "") {
+    eventToPost.url = url;
+  }
+  if (blurb !== "") {
+    eventToPost.blurb = blurb;
+  }
   const getUrl = window.location;
   const baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
   let posting = $.post(baseUrl+"/events/add", eventToPost);

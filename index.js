@@ -29,14 +29,11 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
     // Request headers you wish to allow
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
-
     // Pass to next layer of middleware
     next();
 });
@@ -189,12 +186,20 @@ app.post(base+'/venues/add', (req,res) => {
   }
   // we have all the fields we need
   let newVenue = {};
-  newVenue.venue_id = uuidv4(); // FIXME: should we autogenerate this? the spec says nothing about the user providing this
+  newVenue.venue_id = uuidv4();
   newVenue.name = name;
-  newVenue.postcode = req.body.postcode;
-  newVenue.town = req.body.town;
-  newVenue.url = req.body.url;
-  newVenue.icon = req.body.icon;
+  if (req.body.postcode !== undefined) {
+    newVenue.postcode = req.body.postcode;
+  }
+  if (req.body.town !== undefined) {
+    newVenue.town = req.body.town;
+  }
+  if (req.body.url !== undefined) {
+    newVenue.url = req.body.url;
+  }
+  if (req.body.icon !== undefined) {
+    newVenue.icon = req.body.icon;
+  }
   venuedb.insert(newVenue).then((added) => {
     res.json({success:"added venue successfully"});
   }).catch((error) => {
@@ -244,8 +249,12 @@ app.post(base+'/events/add', (req,res) => {
   newEvent.event_id = event_id;
   newEvent.title = title;
   newEvent.date = date;
-  newEvent.url = req.body.url;
-  newEvent.blurb = req.body.blurb;
+  if (req.body.url !== undefined) {
+    newEvent.url = req.body.url;
+  }
+  if (req.body.blurb !== undefined) {
+    newEvent.blurb = req.body.blurb;
+  }
   // find an event with this event id so that we can inline it into the event database entry
   venuedb.findOne({venue_id:venue_id}).then((venue) => {
     if (venue === undefined || venue === null) {
@@ -330,7 +339,7 @@ function checkToken(token,ipAddress) {
     return false;
   }
   // "concertina" allowed for durham external and for local installations
-  if (token === "concertina" && (ipAddress.startsWith("129.234") || ipAddress.startsWith("127.0.0.1") || ipAddress.startsWith("::1"))) {
+  if (token === "concertina" && (ipAddress.startsWith("129.234") || ipAddress.startsWith("::ffff:129.234") || ipAddress.startsWith("127.0.0.1") || ipAddress.startsWith("::1"))) {
     return true;
   }
   const tokenObj = auth_tokens[token];

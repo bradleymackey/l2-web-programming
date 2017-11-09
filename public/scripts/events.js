@@ -29,31 +29,31 @@ $("#event-search").submit( (event) => {
       $rowToInsert.append(`<div class="col-md" id="col-md-${itemCount}"><div class="init-show" id="init-show-${itemCount}"></div><div class="init-hidden" id="init-hidden-${itemCount}"></div></div>`);
       // portion that is initially shown to the user
       let $initShow = $(`#init-show-${itemCount}`);
-      $initShow.append(`<h3>${event.title}</h3><hr>`);
-      $initShow.append(`<h5>${event.venue.name}</h5>`);
-      $initShow.append(`<p class="text-muted">${event.date}</p>`);
+      $initShow.append(`<h3>${event.title || ""}</h3><hr>`);
+      $initShow.append(`<h5>${event.venue.name || ""}</h5>`);
+      $initShow.append(`<p class="text-muted">${event.date || ""}</p>`);
       $initShow.append(`<button type="button" class="btn btn-info more-button">More Info</button>`);
       // portion that will be shown when more-button is clicked
       let $initHidden = $(`#init-hidden-${itemCount}`);
-      $initHidden.append(`<p>${event.blurb}</p>`);
-      $initHidden.append(`<p class="text-muted">Event ID: <code>${event.event_id}</code></p>`);
+      $initHidden.append(`<p>${event.blurb || ""}</p>`);
+      $initHidden.append(`<p class="text-muted">Event ID: <code>${event.event_id || ""}</code></p>`);
       if (event.url !== undefined && event.url !== null) {
         if (event.url !== "") {
-          $initHidden.append(`<a href="${event.url}"><b>Event Website</b></a>`);
+          $initHidden.append(`<a href="${event.url || ""}"><b>Event Website</b></a>`);
         }
       }
       $initHidden.append(`<hr class="dashed">`);
       // only add icon if it is not undefined
       if (event.venue.icon !== undefined && event.venue.icon !== null) {
         if (event.venue.icon !== "") {
-          $initHidden.append(`<img style="max-width: 100px; max-height: 50px; object-fit: contain;" src="${event.venue.icon}" alt="icon"><br><br>`);
+          $initHidden.append(`<img style="max-width: 100px; max-height: 50px; object-fit: contain;" src="${event.venue.icon || ""}" alt="icon"><br><br>`);
         }
       }
-      $initHidden.append(`<p>${event.venue.name}<br>${event.venue.town} ${event.venue.postcode}</p>`);
-      $initHidden.append(`<p class="text-muted">Venue ID: <code>${event.venue.venue_id}</code></p>`);
+      $initHidden.append(`<p>${event.venue.name || ""}<br>${event.venue.town || ""} ${event.venue.postcode || ""}</p>`);
+      $initHidden.append(`<p class="text-muted">Venue ID: <code>${event.venue.venue_id || ""}</code></p>`);
       if (event.venue.url !== undefined && event.venue.url !== null) {
         if (event.venue.url !== "") {
-          $initHidden.append(`<a href="${event.venue.url}"><b>Venue Website</b></a>`);
+          $initHidden.append(`<a href="${event.venue.url || ""}"><b>Venue Website</b></a>`);
         }
       }
       itemCount += 1;
@@ -76,38 +76,37 @@ $("#event-search").submit( (event) => {
       $rowToInsert.append(`<div class="col-md" id="col-md-${itemCount}"><div class="init-show" id="init-show-${itemCount}"></div><div class="init-hidden" id="init-hidden-${itemCount}"></div></div>`);
       // portion that is initially shown to the user
       let $initShow = $(`#init-show-${itemCount}`);
-      $initShow.append(`<h3>${event.title}</h3><hr>`);
-      $initShow.append(`<h5>${event.venue_name}</h5>`);
-      $initShow.append(`<p class="text-muted">${event.start_time}</p>`);
+      $initShow.append(`<h3>${event.title || ""}</h3><hr>`);
+      $initShow.append(`<h5>${event.venue_name || ""}</h5>`);
+      $initShow.append(`<p class="text-muted">${event.start_time || ""}</p>`);
       $initShow.append(`<button type="button" class="btn btn-info more-button">More Info</button>`);
       // portion that will be shown when more-button is clicked
       let $initHidden = $(`#init-hidden-${itemCount}`);
-      $initHidden.append(`<p>${event.description}</p>`);
-      $initHidden.append(`<p class="text-muted">Event ID: <code>${event.id}</code></p>`);
+      $initHidden.append(`<p>${event.description || ""}</p>`);
+      $initHidden.append(`<p class="text-muted">Event ID: <code>${event.id || ""}</code></p>`);
       if (event.url !== undefined && event.url !== null) {
         if (event.url !== "") {
-          $initHidden.append(`<a href="${event.url}"><b>Event Website</b></a>`);
+          $initHidden.append(`<a href="${event.url || ""}"><b>Event Website</b></a>`);
         }
       }
       $initHidden.append(`<hr class="dashed">`);
       // only add icon if it is not undefined
       if (event.image !== undefined && event.image !== null) {
         if (event.image !== "") {
-          $initHidden.append(`<img style="max-width: 100px; max-height: 50px; object-fit: contain;" src="${event.image}" alt="icon"><br><br>`);
+          $initHidden.append(`<img style="max-width: 100px; max-height: 50px; object-fit: contain;" src="${event.image || ""}" alt="icon"><br><br>`);
         }
       }
-      $initHidden.append(`<p>${event.venue_name}<br>${event.city_name}</p>`);
-      $initHidden.append(`<p class="text-muted">Venue ID: <code>${event.venue_id}</code></p>`);
+      $initHidden.append(`<p>${event.venue_name || ""}<br>${event.city_name || ""}</p>`);
+      $initHidden.append(`<p class="text-muted">Venue ID: <code>${event.venue_id || ""}</code></p>`);
       if (event.venue_url !== undefined && event.venue_url !== null) {
         if (event.venue_url !== "") {
-          $initHidden.append(`<a href="${event.venue_url}"><b>Venue Website</b></a>`);
+          $initHidden.append(`<a href="${event.venue_url || ""}"><b>Venue Website</b></a>`);
         }
       }
       itemCount += 1;
     }
   }, "jsonp"); //jsonp allows cross site sending of data
 });
-
 
 // when the show more button is clicked
 // IMPORTANT, the main element we are referencing MUST have been visible before the javascript loaded
