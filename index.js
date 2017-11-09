@@ -52,39 +52,6 @@ app.use(bodyParser.urlencoded({extended:true}));
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-// app.get('/', function(req,res)  {
-//   let ven = {
-//     "event_id":"e_2",
-//     "title":"BoardMasters",
-//     "blurb":"The biggest and best concertina weekend in the world. Held each May in Grinton Lodge YHA, North Yorkshire",
-//     "date":"2018-05-21T16:00:00Z",
-//     "url":"http://www.swaledalesqueeze.org.uk",
-//     "venue": {
-//     "name":"Sage Gateshead",
-//     "postcode":"NE8 2JR",
-//     "town":"Gateshead",
-//     "url":"someurl",
-//     "icon":"someicon",
-//     "venue_id":"v_2"
-//      }
-//     }
-//   eventdb.insert(ven);
-//       res.send("done");
-// });
-
-// app.get('/', function (req,res) {
-//   let ven = {
-//     "venue_id":"v_2",
-//     "name":"Sage Gateshead",
-//     "postcode":"NE8 2JR",
-//     "town":"Gateshead",
-//     "url":"http://www.sagegateshead.com/",
-//     "icon":"http://www.sagegateshead.com/files/images/pageimage/1683.7123dea7/630x397.fitandcrop.jpg"
-//   }
-//   venuedb.insert(ven);
-//   res.send("done");
-// });
-
 // list all venue details
 // no parameters
 app.get(base+'/venues', (req, res) => {
@@ -122,22 +89,49 @@ app.get(base+'/venues', (req, res) => {
 
 // Parameter 'search' url-encoded string to be used to search event title (optional)
 // Parameter 'date' url-encoded string representing the date to search for (optional)
+// Performs a case-insenstive search for the event by Title
+// Performs an exact search for an event by ISO8601 date.
 app.get(base+'/events/search', (req,res) => {
   // the query strings will be undefined if they are not present.
   const searchedTitle = req.query.search;
   const searchedDate = req.query.date;
-  const searchParams = {};
-  if (searchedTitle !== undefined && searchedTitle !== "") {
-    searchParams.title = searchedTitle;
-  }
-  if (searchedDate !== undefined && searchedDate !== "") {
-    searchParams.date = searchedDate;
-  }
-  eventdb.find(searchParams).then((allEventsArray) => {
-    for (event of allEventsArray) {
-      delete event._id;
+  eventdb.find({}).then((allEventsArray) => {
+    // iterate all events and add results to `matches`
+    let matches = [];
+    for (let i in allEventsArray) {
+      // keeps track of what parameters this event matches
+      let matchTitle = false;
+      let matchDate = false;
+      const event = allEventsArray[i];
+      // * CHECK TITLE MATCHES *
+      if (searchedTitle !== null && searchedTitle !== undefined) {
+        const lowerSearch = searchedTitle.toLowerCase();
+        const lowerEventTitle = event.title.toLowerCase();
+        if (lowerEventTitle.includes(lowerSearch)) {
+          matchTitle = true;
+        }
+      } else {
+        // if there is no title specified, match the title
+        matchTitle = true;
+      }
+      // * CHECK DATE MATCHES *
+      if (searchedDate !== null && searchedDate !== undefined) {
+        const dateLower = event.date.toLowerCase();
+        const searchLower = searchedDate.toLowerCase();
+        if (dateLower.includes(searchLower)) {
+          matchDate = true;
+        }
+      } else {
+        // if there is no date, then match the date
+        matchDate = true;
+      }
+      // if both match, add that event to the results
+      if (matchTitle && matchDate) {
+        delete event._id;
+        matches.push(event);
+      }
     }
-    res.json({events:allEventsArray});
+    res.json({events:matches});
     res.end();
   }).catch((error) => {
     res.status(400);
@@ -290,13 +284,12 @@ app.post(base+'/events/add', (req,res) => {
 // issues auth token which lasts 2 hours
 app.post(base+'/request-token', (req,res) => {
   const username = req.body.username;
-  // passsword should be pre-hashed
   const password = req.body.password;
   const ip = req.ip;
   if (username === undefined || password === undefined) {
     res.status(400);
     res.json({error:"username and password required"});
-  } else {
+  } else if (username === "admin" && password === "password") {
     // save the entry with the ip address and timestamp, so we know if the user trying to use the token is in a different location or if the key has expired.
     const random_token = uuidv4();
     auth_tokens[random_token] = {
@@ -305,6 +298,9 @@ app.post(base+'/request-token', (req,res) => {
       user:username
     };
     res.json({auth_token:random_token});
+  } else {
+    res.status(400);
+    res.json({error:"username and password combination not recognised by the system"});
   }
 });
 

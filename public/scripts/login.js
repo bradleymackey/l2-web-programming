@@ -4,10 +4,12 @@ $("#login-form").on('submit', (event) => {
   const username = $("#username-field").val();
   const password = $("#password-field").val();
   if (username === "" || username === null || username === undefined) {
+    $("#server-alert-container").hide();
     $("#login-alert-container").show();
     return;
   }
   if (password === "" || password === null || password === undefined) {
+    $("#server-alert-container").hide();
     $("#login-alert-container").show();
     return;
   }
@@ -28,10 +30,15 @@ $("#login-form").on('submit', (event) => {
       // redirect to admin panel
       window.location.replace("/events2017/admin.html");
     } else {
-      console.log("no auth token returned from server. serious error folks.");
+      console.log("no auth token returned from server. must be the incorrect username/password combination");
       // no auth_token returned!! must be an error
       $("#login-alert-container").hide();
       $("#server-alert-container").show();
     }
+  }).fail(() => {
+    console.log("no auth token returned from server. must be the incorrect username/password combination");
+    // no auth_token returned!! must be an error
+    $("#login-alert-container").hide();
+    $("#server-alert-container").show();
   });
 });
