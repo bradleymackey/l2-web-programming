@@ -52,10 +52,10 @@ app.use(cookieParser());
 // list all venue details
 // no parameters
 app.get(base+'/venues', (req, res) => {
-  venuedb.find({}).then((allEventsArray) => {
-    // if we cannot get data for some reason, we cannot provide allEventsArray
+  venuedb.find({}).then((allVenuesArray) => {
+    // if we cannot get data for some reason, we cannot provide allVenuesArray
     // just return the empty object.
-    if (allEventsArray === undefined || allEventsArray === null) {
+    if (allVenuesArray === undefined || allVenuesArray === null) {
       // there is nothing in the database, so return nothing
       res.json({venues:{}});
       res.end();
@@ -63,7 +63,7 @@ app.get(base+'/venues', (req, res) => {
     // all events are returned as an ARRAY of objects, so we need to send them as one mega object
     var allVenues = {};
     allVenues.venues = {};
-    for (venue of allEventsArray) {
+    for (venue of allVenuesArray) {
       let venueObj = {};
       // create the object with only the properties that we need
       venueObj.name = venue.name;
