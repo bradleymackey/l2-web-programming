@@ -184,6 +184,13 @@ $("#add-event-form").on('submit', (event) => {
     } else {
       // no error, remove the modal and update the page.
       $('.modal').modal('hide').data('bs.modal', null );
+      // remove the text from the text entry box
+      $("#event-title-field").val("");
+      $("#event-id-field").val("");
+      $("#event-date-field").val("");
+      $("#event-url-field").val("");
+      $("#event-blurb-field").val("");
+      $("#event-venue_id-field").val("");
     }
   });
   posting.fail(function() {
